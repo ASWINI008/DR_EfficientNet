@@ -6,7 +6,6 @@ import os
 
 MODEL_PATH = "dr_effnet_model.h5"
 INPUT_SIZE = (224, 224)
-CLASS_NAMES = ["No DR", "Mild DR", "Moderate DR", "Severe DR", "Proliferative DR"]
 
 @st.cache_resource
 def load_my_model():
@@ -16,6 +15,9 @@ def load_my_model():
     return load_model(MODEL_PATH)
 
 model = load_my_model()
+
+num_classes = model.output_shape[1]
+CLASS_NAMES = [f"Class {i}" for i in range(num_classes)]
 
 def preprocess_image(image: Image.Image):
     image = image.convert("RGB")
@@ -32,19 +34,12 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 if uploaded_file:
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Image", use_container_width=True)
-
     img_processed = preprocess_image(image)
     predictions = model.predict(img_processed)
-
-    st.write("Model output shape:", predictions.shape)  # optional for debugging
-
+    st.write("Model output shape:", predictions.shape)
     pred_index = int(np.argmax(predictions))
+    pred_class = CLASS_NAMES[pred_index]
+    confidence = float(predictions[0][pred_index])
+    st.markdown(f"### 🩺 Prediction: **{pred_class}**")
+    st.write(f"**Confidence:** {confidence * 100:.2f}%")
 
-    if pred_index < len(CLASS_NAMES):
-        pred_class = CLASS_NAMES[pred_index]
-        confidence = float(predictions[0][pred_index])
-        st.markdown(f"### 🩺 Prediction: **{pred_class}**")
-        st.write(f"**Confidence:** {confidence * 100:.2f}%")
-    else:
-        st.error(f"Unexpected prediction index: {pred_index}. Check model output.")
-        st.write("Raw model output:", predictions)
