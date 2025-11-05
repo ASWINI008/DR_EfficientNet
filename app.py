@@ -36,10 +36,15 @@ if uploaded_file:
     img_processed = preprocess_image(image)
     predictions = model.predict(img_processed)
 
+    st.write("Model output shape:", predictions.shape)  # optional for debugging
+
     pred_index = int(np.argmax(predictions))
-    pred_class = CLASS_NAMES[pred_index]
-    confidence = float(predictions[0][pred_index])
 
-    st.markdown(f"### 🩺 Prediction: **{pred_class}**")
-    st.write(f"**Confidence:** {confidence * 100:.2f}%")
-
+    if pred_index < len(CLASS_NAMES):
+        pred_class = CLASS_NAMES[pred_index]
+        confidence = float(predictions[0][pred_index])
+        st.markdown(f"### 🩺 Prediction: **{pred_class}**")
+        st.write(f"**Confidence:** {confidence * 100:.2f}%")
+    else:
+        st.error(f"Unexpected prediction index: {pred_index}. Check model output.")
+        st.write("Raw model output:", predictions)
