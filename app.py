@@ -50,21 +50,33 @@ if uploaded_file:
     if st.button("Predict"):
         with st.spinner("Predicting..."):
             predictions = model.predict(img_processed)
-
+    
         # Aggregate predictions for 5 classes
         pred_probs_5 = np.zeros(len(CLASS_NAMES))
         for idx_16, idx_5 in CLASS_MAPPING.items():
             pred_probs_5[idx_5] += predictions[0][idx_16]
-
+    
+        # ✅ Normalize the probabilities (important)
+        pred_probs_5 = pred_probs_5 / np.sum(pred_probs_5)
+    
         # Get class with highest confidence
         pred_index_5 = int(np.argmax(pred_probs_5))
         pred_class_5 = CLASS_NAMES[pred_index_5]
         confidence_5 = pred_probs_5[pred_index_5]
-
+    
         st.markdown(f"### 🩺 Prediction: **{pred_class_5}**")
         st.write(f"**Confidence:** {confidence_5 * 100:.2f}%")
-
-
-
+    
+        # Show detailed probabilities
+        st.write("#### Detailed Probabilities:")
+        for i, cls in enumerate(CLASS_NAMES):
+            st.write(f"{cls}: {pred_probs_5[i] * 100:.2f}%")
+    
+        # ✅ (Optional) Add a "Show Highest" Button
+        if st.button("Show Highest Probability Class"):
+            st.success(f"The highest predicted class is **{pred_class_5}** with {confidence_5*100:.2f}% confidence!")
+    
+    
+    
 
 
