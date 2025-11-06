@@ -13,24 +13,28 @@ Download and extract it using:
 ```bash
 python download_dataset.py
 
-# Retinal Disease Prediction with EfficientNet
 
-A deep learning web app to classify stages of diabetic retinopathy from retinal fundus images using EfficientNet.
+# Retinal Disease Prediction Web App
 
-## 🔗 Live Demo
-Try it online: [https://drefficientnet-dzymskeef4ktx3gkhs25wi.streamlit.app/](https://drefficientnet-dzymskeef4ktx3gkhs25wi.streamlit.app/)
+This is a Streamlit web app that predicts diabetic retinopathy stages from retinal fundus images using EfficientNet.
 
-## 🧠 Project Overview
-This project uses a pretrained EfficientNet-based deep neural network (DNN) to detect **5 classes** of diabetic retinopathy:
+## Live Demo
 
-- No DR  
-- Mild DR  
-- Moderate DR  
-- Severe DR  
-- Proliferative DR  
+Try the app online here: [🔗 Open the App](https://drefficientnet-a6muojwjx5gj8qggmxqr83.streamlit.app/)
 
-Users can upload a retinal fundus image via the Streamlit interface to receive an instant prediction along with a confidence score.
+## Features
 
-## 📁 File Structure
+- Upload retinal fundus images (`.jpg`, `.jpeg`, `.png`)  
+- Predict diabetic retinopathy stage: No DR, Mild DR, Moderate DR, Severe DR, Proliferative DR  
+- Show confidence percentages and detailed probabilities
+
+## Running Locally (Optional)
+
+1. Clone the repo:
+
+```bash
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+
 
 
